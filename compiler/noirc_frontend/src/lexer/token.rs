@@ -947,6 +947,11 @@ impl Attributes {
         self.has_secondary_attr(&SecondaryAttributeKind::Export)
     }
 
+    /// True if the function is marked with a `#[formal]` attribute.
+    pub fn has_formal(&self) -> bool {
+        self.has_secondary_attr(&SecondaryAttributeKind::Formal)
+    }
+
     pub fn has_allow(&self, name: &'static str) -> bool {
         self.secondary.iter().any(|attr| attr.kind.is_allow(name))
     }
@@ -1117,6 +1122,9 @@ pub enum SecondaryAttributeKind {
 
     /// Allow chosen warnings to happen so they are silenced.
     Allow(String),
+
+    // Allows formal verification of ACIR code
+    Formal,
 }
 
 impl SecondaryAttributeKind {
@@ -1146,6 +1154,7 @@ impl SecondaryAttributeKind {
             SecondaryAttributeKind::Varargs => "varargs".to_string(),
             SecondaryAttributeKind::UseCallersScope => "use_callers_scope".to_string(),
             SecondaryAttributeKind::Allow(k) => format!("allow({k})"),
+            SecondaryAttributeKind::Formal => "formal".to_string(),
         }
     }
 }
