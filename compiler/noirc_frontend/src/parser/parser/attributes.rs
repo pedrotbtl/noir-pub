@@ -293,6 +293,12 @@ impl Parser<'_> {
                 let attr = Attribute::Secondary(attr);
                 self.parse_no_args_attribute(ident, arguments, attr)
             }
+            "formal" => {
+                let kind = SecondaryAttributeKind::Formal;
+                let attr = SecondaryAttribute { kind, location };
+                let attr = Attribute::Secondary(attr);
+                self.parse_no_args_attribute(ident, arguments, attr)
+            },
             _ => {
                 let kind = SecondaryAttributeKind::Meta(MetaAttribute {
                     name: MetaAttributeName::Path(Path::from_ident(ident.clone())),
@@ -771,6 +777,13 @@ mod tests {
     fn parses_attribute_allow() {
         let src = "#[allow(unused_vars)]";
         let expected = SecondaryAttributeKind::Allow("unused_vars".to_string());
+        parse_secondary_attribute_no_errors(src, expected);
+    }
+
+    #[test]
+    fn parses_attribute_formal() {
+        let src = "#[formal]";
+        let expected = SecondaryAttributeKind::Formal;
         parse_secondary_attribute_no_errors(src, expected);
     }
 
