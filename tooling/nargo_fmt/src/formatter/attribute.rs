@@ -102,6 +102,9 @@ impl Formatter<'_> {
             SecondaryAttributeKind::Meta(meta_attribute) => {
                 self.format_meta_attribute(meta_attribute);
             }
+            SecondaryAttributeKind::Formal => {
+                self.format_no_args_attribute();
+            },
         }
 
         self.write_line();
@@ -262,7 +265,7 @@ mod tests {
 
     #[test]
     fn format_inner_tag_attribute() {
-        let src = "  #!['foo] ";
+        let src = "  #!['foo ";
         let expected = "#!['foo]\n";
         assert_format(src, expected);
     }
