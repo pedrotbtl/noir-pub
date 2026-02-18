@@ -258,6 +258,24 @@ impl CrateDefMap {
         })
     }
 
+    /// Go through all modules in this crate, and find all functions in
+    /// each module with the `#[formal]` attribute
+    pub fn get_all_formal_functions<'a>(
+        &'a self,
+        interner: &'a NodeInterner,
+    ) -> impl Iterator<Item = FuncId> + 'a {
+        self.modules.iter().flat_map(|(_, module)| {
+            module.value_definitions().filter_map(|id| {
+                if let Some(func_id) = id.as_function() {
+                    let attributes = interner.function_attributes(&func_id);
+                    attributes.has_formal().then_some(func_id)
+                } else {
+                    None
+                }
+            })
+        })
+    }
+
     /// Returns an iterator over all contract modules within the crate.
     pub fn get_all_contracts(&self) -> impl Iterator<Item = (LocalModuleId, String)> {
         self.modules.iter().filter_map(|(id, module)| {

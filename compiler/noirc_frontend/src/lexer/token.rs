@@ -782,6 +782,11 @@ impl Attributes {
         self.has_secondary_attr(&SecondaryAttributeKind::Export)
     }
 
+    /// True if the function is marked with a `#[formal]` attribute.
+    pub fn has_formal(&self) -> bool {
+        self.has_secondary_attr(&SecondaryAttributeKind::Formal)
+    }
+
     pub fn has_allow(&self, name: &'static str) -> bool {
         self.secondary.iter().any(|attr| attr.kind.is_allow(name))
     }
@@ -954,6 +959,8 @@ pub enum SecondaryAttributeKind {
     /// Instead, `#[must_use]` in Noir promotes this warning to a hard error, with
     /// an optional message for the error.
     MustUse(Option<String>),
+    // Allows formal verification of ACIR code
+    Formal,
 }
 
 impl SecondaryAttributeKind {
@@ -985,6 +992,7 @@ impl SecondaryAttributeKind {
             SecondaryAttributeKind::Allow(k) => format!("allow({k})"),
             SecondaryAttributeKind::MustUse(None) => "must_use".to_string(),
             SecondaryAttributeKind::MustUse(Some(msg)) => format!("must_use = \"{msg}\""),
+            SecondaryAttributeKind::Formal => "formal".to_string(),
         }
     }
 
