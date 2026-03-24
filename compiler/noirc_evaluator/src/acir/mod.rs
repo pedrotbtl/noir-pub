@@ -869,7 +869,7 @@ impl<'a> Context<'a> {
                         let integer_modulus = power_of_two::<FieldElement>(max_bit_size);
                         let integer_modulus = self.acir_context.add_constant(integer_modulus);
                         var = self.acir_context.add_var(var, integer_modulus)?;
-                        max_bit_size += 1;
+                        // max_bit_size += 1;
                     }
                 }
             }

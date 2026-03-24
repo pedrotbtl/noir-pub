@@ -1014,7 +1014,7 @@ impl<F: AcirField> AcirContext<F> {
             .var_to_expression(rhs)?
             .to_const()
             .and_then(|c| c.try_into_u128())
-            .filter(|c| *c != 0)
+            // .filter(|c| *c != 0)
         {
             // We try to move the offset to rhs if possible.
             let can_move_offset_to_rhs = self.is_constant_one(&offset);
