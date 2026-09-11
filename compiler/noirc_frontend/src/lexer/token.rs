@@ -769,6 +769,11 @@ impl Attributes {
         self.secondary.iter().any(|attr| attr.kind.is_allow(lint))
     }
 
+    /// True if the function is marked with a `#[formal]` attribute.
+    pub fn has_formal(&self) -> bool {
+        self.has_secondary_attr(&SecondaryAttributeKind::Formal)
+    }
+
     /// Check if secondary attributes contain a specific instance.
     pub fn has_secondary_attr(&self, kind: &SecondaryAttributeKind) -> bool {
         self.secondary.iter().any(|attr| &attr.kind == kind)
@@ -964,6 +969,9 @@ pub enum SecondaryAttributeKind {
     /// Only valid on `unconstrained` functions also marked `#[oracle(...)]`.
     /// For other functions, purity is deduced from their implementation.
     Pure,
+
+    /// Allows formal verification of ACIR code
+    Formal,
 }
 
 impl SecondaryAttributeKind {
@@ -998,6 +1006,7 @@ impl SecondaryAttributeKind {
             SecondaryAttributeKind::MustUse(None) => "must_use".to_string(),
             SecondaryAttributeKind::MustUse(Some(msg)) => format!("must_use = \"{msg}\""),
             SecondaryAttributeKind::Pure => "pure".to_string(),
+            SecondaryAttributeKind::Formal => "formal".to_string(),
         }
     }
 

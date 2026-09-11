@@ -28,6 +28,19 @@ impl Parser<'_> {
             }
         })
     }
+    // fn parse_inner_doc_comment(&mut self) -> Option<String> {
+    //     let opt_comment = self.eat_kind(TokenKind::InnerDocComment).map(|token| match token.into_token() {
+    //         Token::LineComment(comment, Some(DocStyle::Inner))
+    //         | Token::BlockComment(comment, Some(DocStyle::Inner)) => comment,
+    //         _ => unreachable!(),
+    //     });
+    //     // if let Some(comment) = opt_comment.clone() {
+    //     //     if comment.contains("@precondition") || comment.contains("@postcondition") {
+    //     //         println!("Inner comment: {}", comment);
+    //     //     }
+    //     // }
+    //     opt_comment
+    // }
 
     /// `OuterDocComments` = `OuterDocComment`*
     pub(super) fn parse_outer_doc_comments(&mut self) -> Vec<DocComment> {
@@ -51,6 +64,27 @@ impl Parser<'_> {
             }
         })
     }
+    // pub(super) fn parse_outer_doc_comment(&mut self) -> Option<String> {
+    //     let opt_comment= self.eat_kind(TokenKind::OuterDocComment).map(|token| match token.into_token() {
+    //         Token::LineComment(comment, Some(DocStyle::Outer))
+    //         | Token::BlockComment(comment, Some(DocStyle::Outer)) => comment,
+    //         _ => unreachable!(),
+    //     });
+    //     if let Some(comment) = opt_comment.clone() {
+    //         if comment.contains("@precondition") || comment.contains("@postcondition") {
+    //             println!("Outer doc comment: {}", comment);
+    //             // use parse_comments from statement.rs and
+    //             // convert into a statement??
+    //             //
+    //             // correct location info is required for insertion of pre and post
+    //             // conditions
+    //             //
+    //             // ParsedModule holds all the inner doc comments if they
+    //             // are needed later
+    //         }
+    //     }
+    //     opt_comment
+    // }
 
     /// Skips any outer doc comments but produces a warning saying that they don't document anything.
     pub(super) fn warn_on_outer_doc_comments(&mut self) {

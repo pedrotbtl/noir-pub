@@ -291,6 +291,20 @@ impl Context<'_, '_> {
             .collect()
     }
 
+    /// Returns a list of all functions in the current crate marked with `#[formal]`
+    pub fn get_all_formal_functions_in_crate(&self, crate_id: &CrateId) -> Vec<(String, FuncId)> {
+        let interner = &self.def_interner;
+        let def_map = self.def_map(crate_id).expect("The local crate should be analyzed already");
+
+        def_map
+            .get_all_formal_functions(interner)
+            .map(|function_id| {
+                let function_name = self.function_name(&function_id).to_owned();
+                (function_name, function_id)
+            })
+            .collect()
+    }
+
     pub fn module(&self, module_id: def_map::ModuleId) -> &def_map::ModuleData {
         module_id.module(&self.def_maps)
     }

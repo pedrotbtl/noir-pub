@@ -617,6 +617,7 @@ fn secondary_attribute_with_file(
         | SecondaryAttributeKind::MustUse(_)
         | SecondaryAttributeKind::Allow(_)
         | SecondaryAttributeKind::Pure => secondary_attribute.kind,
+        SecondaryAttributeKind::Formal => secondary_attribute.kind,
     };
     SecondaryAttribute { kind, location: location_with_file(secondary_attribute.location, file) }
 }
